@@ -19,34 +19,44 @@ class Codechef
 		    arr[i] = in.nextInt();
 		}
 		k = in.nextInt();
-		findIndicesOfKMaximumNumbers(arr, k, N);
+		
+		if(k>N){
+		    System.out.println("K Not within array limits");
+		    return;
+		}
+		int[] output = new int[k];
+		output = findIndicesOfKMaximumNumbers(arr, k, N);
+		for(int i = 0; i<k;i++){
+		    System.out.print(output[i] + " ");
+		}
 	}
 	
-	public static void findIndicesOfKMaximumNumbers(int[] arr, int k, int N){
+	public static int[] findIndicesOfKMaximumNumbers(int[] arr, int k, int N){
+	    int[] output = new int[k];
 	    int[] arr_copy = Arrays.copyOfRange(arr,0,N);
 	    Arrays.sort(arr);
 	    int[] kMax = Arrays.copyOfRange(arr,N-k,N); 
 	    for(int i = 0;i <N; i++){
-	        if(binarySearch(kMax, arr_copy[i])){
-	            System.out.print(i + " ");
+	        int index = binarySearch(kMax, arr_copy[i]);
+	        if(index!=-1){
+	            output[k-index-1] = i+1;
 	        }
 	    }
+	    return output;
 	}
 	
-    public static boolean binarySearch(int[] a, int n){
+    public static int binarySearch(int[] a, int n){
         int start = 0, end = a.length -1, mid;
         while(start <= end){
             mid = (start+end)/2;
-            if(a[mid] == n) return true;
+            if(a[mid] == n) return mid;
             else if(a[mid] < n){
                 start = mid+1;
-                continue;
             }
             else{
                 end = mid-1;
-                continue;
             }
         }
-        return false;
+        return -1;
     }
 }
